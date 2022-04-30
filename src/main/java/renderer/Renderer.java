@@ -9,6 +9,7 @@ import java.util.List;
 public class Renderer {
     private final int MAX_BATCH_SIZE = 1000;
     private List<RenderBatch> batches;
+    private static Shader currShader;
 
     public Renderer(){
         this.batches = new ArrayList<>();
@@ -43,8 +44,18 @@ public class Renderer {
         }
     }
 
+    public static void bindShader(Shader shader){
+        currShader = shader;
+    }
+
+    public static Shader getBoundShader(){
+        return currShader;
+    }
+
     public void render(){
-        for(RenderBatch  batch: batches){
+        currShader.use();
+        for (int i = 0; i < batches.size(); i++) {
+            RenderBatch batch = batches.get(i);
             batch.render();
         }
     }

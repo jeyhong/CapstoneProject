@@ -28,39 +28,13 @@ public class LevelEditorScene extends SceneInit {
 
     @Override
     public void init(){
+        this.camera = new Camera(new Vector2f(-250, 0));
         levelEditorTools.addComponent(new MouseControls());
         levelEditorTools.addComponent(new GridLines());
+        levelEditorTools.addComponent(new editorCam(this.camera));
 
         loadResources();
-        this.camera = new Camera(new Vector2f(-250, 0));
         sprites = AssetPool.getSpritesheet("assets/images/decorationsAndBlocks.png");
-
-        if(levelLoaded){
-            if(gameObjs.size() > 0){
-                this.activeGameObj = gameObjs.get(0);
-            }
-            return;
-        }
-
-
-
-//        obj1 = new GameObj("Obj1", new Transform(new Vector2f(100, 100), new Vector2f(256, 256)), 4);
-//        obj1SprRenderer = new SpriteRenderer();
-//        Sprite obj1Spr = new Sprite();
-//        obj1Spr.setTexture(AssetPool.getTexture("assets/images/blendImage1.png"));
-//        obj1SprRenderer.setSprite(obj1Spr);
-//        obj1.addComponent(obj1SprRenderer);
-//        obj1.addComponent(new Rigidbody());
-//        this.addGameObjToScene(obj1);
-//        this.activeGameObj = obj1;
-//
-//        GameObj obj2 = new GameObj("Obj2", new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), 2);
-//        SpriteRenderer obj2SprRenderer = new SpriteRenderer();
-//        Sprite obj2Spr = new Sprite();
-//        obj2Spr.setTexture(AssetPool.getTexture("assets/images/blendImage2.png"));
-//        obj2SprRenderer.setSprite(obj2Spr);
-//        obj2.addComponent(obj2SprRenderer);
-//        this.addGameObjToScene(obj2);
     }
 
     private void loadResources(){
@@ -86,12 +60,18 @@ public class LevelEditorScene extends SceneInit {
     @Override
     public void update(float dt) {
         levelEditorTools.update(dt);
+        this.camera.adjustProjection();
+
         for(GameObj go : this.gameObjs){
             go.update(dt);
         }
-        this.renderer.render();
+
     }
 
+    @Override
+    public void render(){
+        this.renderer.render();
+    }
     @Override
     public void imgui(){
         ImGui.begin("Level Editor");
