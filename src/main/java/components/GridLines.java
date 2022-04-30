@@ -1,5 +1,6 @@
 package components;
 
+import NMM.Camera;
 import NMM.Window;
 import Utils.Settings;
 import org.joml.Vector2f;
@@ -10,17 +11,18 @@ public class GridLines extends Component{
 
     @Override
     public void update(float dt){
-        Vector2f cameraPos = Window.getScene().camera().position;
-        Vector2f projSize = Window.getScene().camera().getProjSize();
+        Camera cam = Window.getScene().camera();
+        Vector2f cameraPos = cam.position;
+        Vector2f projSize = cam.getProjSize();
 
         int firstX = ((int)(cameraPos.x / Settings.GRID_WIDTH) - 1) * Settings.GRID_WIDTH;
         int firstY = ((int)(cameraPos.y / Settings.GRID_HEIGHT) -1) * Settings.GRID_HEIGHT;
 
-        int vertLines = (int)(projSize.x / Settings.GRID_WIDTH) + 2;
-        int horizLInes = (int)(projSize.y / Settings.GRID_HEIGHT) + 2;
+        int vertLines = (int)(projSize.x * cam.getZoom()/ Settings.GRID_WIDTH) + 2;
+        int horizLInes = (int)(projSize.y * cam.getZoom()/ Settings.GRID_HEIGHT) + 2;
 
-        int height = (int)projSize.y + Settings.GRID_HEIGHT * 2;
-        int width = (int)projSize.x + Settings.GRID_WIDTH * 2;
+        int height = (int)(projSize.y * cam.getZoom()) + Settings.GRID_HEIGHT * 2;
+        int width = (int)(projSize.x * cam.getZoom()) + Settings.GRID_WIDTH * 2;
         Vector3f color = new Vector3f(0.2f, 0.0f, 0.2f);
         int maxLines = Math.max(vertLines, horizLInes);
         for(int i = 0; i < maxLines; i++){

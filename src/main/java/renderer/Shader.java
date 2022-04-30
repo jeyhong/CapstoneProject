@@ -175,6 +175,5 @@ public class Shader {
         int varLocation = glGetUniformLocation(shaderProgramID, varName);
         use();
         glUniform1iv(varLocation, array);
-
     }
 }
