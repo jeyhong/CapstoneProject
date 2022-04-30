@@ -27,6 +27,8 @@ project.ext.lwjglNatives = "natives-windows"
 project.ext.imguiVersion = '1.86.4'
 
 dependencies {
+    //Box2D
+    implementation name: 'jbox2d-library'
     //Gson
     implementation 'com.google.code.gson:gson:2.9.0'
 

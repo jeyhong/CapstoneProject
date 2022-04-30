@@ -3,6 +3,7 @@ package renderer;
 import NMM.Window;
 import Utils.AssetPool;
 import components.SpriteRenderer;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
@@ -167,6 +168,16 @@ public class RenderBatch implements Comparable<RenderBatch>{
             }
         }
 
+        boolean isRotated = spr.gameObj.transform.rotation != 0.0f;
+        Matrix4f transformMatrix = new Matrix4f().identity();
+        if(isRotated){
+            transformMatrix.translate(spr.gameObj.transform.position.x,
+                    spr.gameObj.transform.position.y, 0.0f);
+            transformMatrix.rotate((float) Math.toRadians(spr.gameObj.transform.rotation),
+                   0,0,1);
+            transformMatrix.scale(spr.gameObj.transform.scale.x,
+                    spr.gameObj.transform.scale.y, 1);
+        }
 
         //Add vertices with appropriate properties
         float xAdd = 1.0f;
@@ -178,9 +189,17 @@ public class RenderBatch implements Comparable<RenderBatch>{
                 xAdd = 0.0f;
             }else if (i == 3){
                 yAdd = 1.0f;
-            }   //load position
-            verticies[offset] = spr.gameObj.transform.position.x + (xAdd * spr.gameObj.transform.scale.x);
-            verticies[offset + 1] = spr.gameObj.transform.position.y + (yAdd * spr.gameObj.transform.scale.y);
+            }
+
+            Vector4f currPos = new Vector4f( spr.gameObj.transform.position.x + (xAdd * spr.gameObj.transform.scale.x),
+                    spr.gameObj.transform.position.y + (yAdd * spr.gameObj.transform.scale.y), 0, 1 );
+            if(isRotated){
+                currPos = new Vector4f(xAdd, yAdd, 0, 1).mul(transformMatrix);
+            }
+
+            //load position
+            verticies[offset] = currPos.x;
+            verticies[offset + 1] = currPos.y;
 
             //Load color
             verticies[offset + 2] = color.x;

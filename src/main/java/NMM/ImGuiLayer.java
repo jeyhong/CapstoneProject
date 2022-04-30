@@ -191,7 +191,6 @@ public class ImGuiLayer {
         ImGui.newFrame();
         setupDockSpace();
         currScene.imgui();
-        ImGui.showDemoWindow();
         gameViewWindow.imgui();
         propertiesWindow.update(dt, currScene);
         propertiesWindow.imgui();
@@ -250,5 +249,9 @@ public class ImGuiLayer {
         //Dockspace
         ImGui.dockSpace(ImGui.getID("Dockspace"));
 
+    }
+
+    public PropertiesWindow getPropertiesWindow() {
+        return this.propertiesWindow;
     }
 }
