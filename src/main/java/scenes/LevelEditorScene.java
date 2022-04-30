@@ -1,26 +1,17 @@
 package scenes;
 
-import NMM.Camera;
-import NMM.GameObj;
-import NMM.Prefabs;
-import NMM.Transform;
+import NMM.*;
 import Utils.AssetPool;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.sun.source.tree.AssertTree;
 import components.*;
 import imgui.ImGui;
 import imgui.ImVec2;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-import renderer.DebugDraw;
 
 public class LevelEditorScene extends SceneInit {
     private GameObj obj1;
     private SpriteSheet sprites;
     SpriteRenderer obj1SprRenderer;
-    GameObj levelEditorTools = new GameObj("LevelEditor", new Transform(new Vector2f()), 0);
+    GameObj levelEditorTools = this.createGameObj("LevelEditor");
 
     public LevelEditorScene(){
 
@@ -28,13 +19,16 @@ public class LevelEditorScene extends SceneInit {
 
     @Override
     public void init(){
+        loadResources();
+        sprites = AssetPool.getSpritesheet("assets/images/decorationsAndBlocks.png");
+        SpriteSheet widgetSpr = AssetPool.getSpritesheet("assets/images/widgets.png");
+
         this.camera = new Camera(new Vector2f(-250, 0));
         levelEditorTools.addComponent(new MouseControls());
         levelEditorTools.addComponent(new GridLines());
         levelEditorTools.addComponent(new editorCam(this.camera));
-
-        loadResources();
-        sprites = AssetPool.getSpritesheet("assets/images/decorationsAndBlocks.png");
+        levelEditorTools.addComponent(new WidgetSystem(widgetSpr));
+        levelEditorTools.start();
     }
 
     private void loadResources(){
@@ -44,6 +38,8 @@ public class LevelEditorScene extends SceneInit {
                 new SpriteSheet(AssetPool.getTexture("assets/images/decorationsAndBlocks.png"),
                         16, 16, 76, 0));
 
+        AssetPool.addSpriteSheet("assets/images/widgets.png", new SpriteSheet(AssetPool.getTexture("assets/images/widgets.png"),
+                24, 48, 3, 0));
         for(GameObj g: gameObjs){
             if(g.getComponent(SpriteRenderer.class) != null){
                 SpriteRenderer spr = g.getComponent(SpriteRenderer.class);
@@ -74,6 +70,11 @@ public class LevelEditorScene extends SceneInit {
     }
     @Override
     public void imgui(){
+        //this chunk can be removed; for debugging
+        ImGui.begin("Level Editor Tools");
+        levelEditorTools.imGui();
+        ImGui.end();
+
         ImGui.begin("Level Editor");
 
         ImVec2 windowsPos = new ImVec2();
@@ -85,6 +86,7 @@ public class LevelEditorScene extends SceneInit {
 
         float windowX2 = windowsPos.x + windowSize.x;
         for(int i = 0; i< sprites.size(); i++){
+            //TODO: Fix this to reflect our sprites properly?
             Sprite sprite = sprites.getSprite(i);
             float spriteWidth = sprite.getWidth() * 4;
             float spriteHeight = sprite.getHeight() * 4;

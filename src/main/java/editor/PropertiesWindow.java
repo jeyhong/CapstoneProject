@@ -2,6 +2,7 @@ package editor;
 
 import NMM.GameObj;
 import NMM.MouseListener;
+import components.NonPickables;
 import imgui.ImGui;
 import renderer.PickingTexture;
 import scenes.SceneInit;
@@ -12,17 +13,27 @@ public class PropertiesWindow {
     private GameObj activeGameObj = null;
     private PickingTexture pickingTexture;
 
+    private float debounce = 0.2f;
+
     public PropertiesWindow(PickingTexture pickingTexture){
         this.pickingTexture = pickingTexture;
 
     }
 
     public void update(float dt, SceneInit currScene){
-        if(MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)){
+        debounce -= dt;
+
+        if(MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) && debounce < 0){
             int x = (int)MouseListener.getScreenX();
             int y = (int)MouseListener.getScreenY();
             int gameObjID = pickingTexture.readPixel(x, y);
-            activeGameObj = currScene.getGameObj(gameObjID);
+            GameObj pickedObj =  currScene.getGameObj(gameObjID);
+            if(pickedObj != null && pickedObj.getComponent(NonPickables.class) == null){
+                activeGameObj = pickedObj;
+            } else if (pickedObj == null && !MouseListener.isDragging()){
+                activeGameObj = null;
+            }
+            this.debounce = 0.2f;
         }
     }
 
@@ -32,5 +43,9 @@ public class PropertiesWindow {
             activeGameObj.imGui();
             ImGui.end();
         }
+    }
+
+    public GameObj getActiveGo(){
+        return this.activeGameObj;
     }
 }

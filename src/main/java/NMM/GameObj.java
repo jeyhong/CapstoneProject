@@ -1,6 +1,7 @@
 package NMM;
 
 import components.Component;
+import imgui.ImGui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +12,12 @@ public class GameObj {
 
     private String name;
     private List<Component> components;
-    public Transform transform;
-    private int zIndex;
+    public transient Transform transform;
+    private boolean doSerialization = true;
 
-    public GameObj(String name, Transform transform, int zIndex){
+    public GameObj(String name){
         this.name = name;
-        this.zIndex = zIndex;
         this.components = new ArrayList<>();
-        this.transform =  transform;
 
         this.uid = ID_COUNTER++;
     }
@@ -67,12 +66,11 @@ public class GameObj {
 
     public void imGui(){
         for(Component c: components){
-            c.imGui();
-        }
-    }
 
-    public int zIndex(){
-        return zIndex;
+            if(ImGui.collapsingHeader(c.getClass().getSimpleName())){
+                c.imGui();
+            }
+        }
     }
 
     public static void init(int maxId){
@@ -85,5 +83,13 @@ public class GameObj {
 
     public List<Component> getAllComponents() {
         return this.components;
+    }
+
+    public void setNoSerialize() {
+        this.doSerialization = false;
+    }
+
+    public boolean doSerialization(){
+        return this.doSerialization;
     }
 }

@@ -1,6 +1,7 @@
 package scenes;
 
 import NMM.Camera;
+import NMM.Transform;
 import components.ComponentTypeAdapter;
 import NMM.GameObj;
 import NMM.GameObjTypeAdapter;
@@ -68,6 +69,14 @@ public abstract class SceneInit {
     public void imgui(){
 
     }
+
+    public GameObj createGameObj(String name){
+        GameObj go = new GameObj(name);
+        go.addComponent(new Transform());
+        go.transform = go.getComponent(Transform.class);
+        return go;
+    }
+
     public void saveExit(){
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
@@ -76,7 +85,13 @@ public abstract class SceneInit {
                 .create();
         try {
             FileWriter wr = new FileWriter("level.txt");
-            wr.write(gson.toJson(this.gameObjs));
+            List<GameObj> goToSerialize = new ArrayList<>();
+            for(GameObj go : this.gameObjs){
+                if(go.doSerialization()){
+                    goToSerialize.add(go);
+                }
+            }
+            wr.write(gson.toJson(goToSerialize));
             wr.close();
         }catch (IOException e){
             e.printStackTrace();
