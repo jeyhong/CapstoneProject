@@ -9,14 +9,14 @@ public class ScaleWidget extends Widget{
     }
 
     @Override
-    public void update(float dt){
+    public void editorUpdate(float dt){
         if(activeGameObj != null){
             if(xAxisActive && !yAxisActive){
-                activeGameObj.transform.scale.x -= MouseListener.getWorldDx();
+                activeGameObj.transform.scale.x -= MouseListener.getWorldX();
             }else if (yAxisActive){
                 activeGameObj.transform.scale.y -= MouseListener.getWorldY();
             }
         }
-        super.update(dt);
+        super.editorUpdate(dt);
     }
 }

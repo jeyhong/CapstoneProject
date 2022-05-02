@@ -1,5 +1,6 @@
 package renderer;
 
+import NMM.GameObj;
 import NMM.Window;
 import Utils.AssetPool;
 import components.SpriteRenderer;
@@ -44,7 +45,11 @@ public class RenderBatch implements Comparable<RenderBatch>{
     private int maxBatchSize;
     private int zIndex;
 
-    public RenderBatch(int maxBatchSize, int zIndex){
+    private Renderer renderer;
+
+    public RenderBatch(int maxBatchSize, int zIndex, Renderer renderer){
+        this.renderer = renderer;
+
         this.zIndex = zIndex;
         this.sprites = new SpriteRenderer[maxBatchSize];
         this.maxBatchSize = maxBatchSize;
@@ -117,6 +122,12 @@ public class RenderBatch implements Comparable<RenderBatch>{
                 spr.setClean();
                 rebuffer = true;
             }
+
+            if(spr.gameObj.transform.zIndex != this.zIndex){
+                destroyIfExist(spr.gameObj);
+                renderer.add(spr.gameObj);
+                i--;
+            }
         }
         if(rebuffer) {
             glBindBuffer(GL_ARRAY_BUFFER, vboID);
@@ -147,6 +158,21 @@ public class RenderBatch implements Comparable<RenderBatch>{
             textures.get(i).unbind();
         }
         shader.detach();
+    }
+
+    public boolean destroyIfExist(GameObj go) {
+        SpriteRenderer sprite = go.getComponent(SpriteRenderer.class);
+        for(int i = 0; i < numSprites; i++){
+            if(sprites[i] == sprite){
+                for(int j = i; j < numSprites - 1; j++){
+                    sprites[j] = sprites[j + 1];
+                    sprites[j].setDirty();
+                }
+                numSprites--;
+                return true;
+            }
+        }
+        return false;
     }
 
     private void loadVertexProperties(int index){
@@ -180,15 +206,15 @@ public class RenderBatch implements Comparable<RenderBatch>{
         }
 
         //Add vertices with appropriate properties
-        float xAdd = 1.0f;
-        float yAdd = 1.0f;
+        float xAdd = 0.5f;
+        float yAdd = 0.5f;
         for(int i = 0 ; i < 4; i++){
             if(i == 1){
-                yAdd = 0.0f;
+                yAdd = -0.5f;
             }else if (i == 2){
-                xAdd = 0.0f;
+                xAdd = -0.5f;
             }else if (i == 3){
-                yAdd = 1.0f;
+                yAdd = 0.5f;
             }
 
             Vector4f currPos = new Vector4f( spr.gameObj.transform.position.x + (xAdd * spr.gameObj.transform.scale.x),
@@ -266,4 +292,5 @@ public class RenderBatch implements Comparable<RenderBatch>{
     public int compareTo(RenderBatch o) {
         return Integer.compare(this.zIndex, o.zIndex);
     }
+
 }

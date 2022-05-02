@@ -3,6 +3,7 @@ package components;
 import NMM.GameObj;
 import editor.JImGui;
 import imgui.ImGui;
+import imgui.type.ImInt;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -21,10 +22,13 @@ public abstract class Component {
     public void start() {
     }
 
+    public void editorUpdate(float dt) {
+
+    }
     public void update(float dt) {
     }
 
-    public void imGui() {
+    public void imgui() {
         try {
             Field[] fields = this.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -69,6 +73,13 @@ public abstract class Component {
                     if (ImGui.dragFloat4(name + ": ", imVec4)) {
                         val.set(imVec4[0], imVec4[1], imVec4[2], imVec4[3]);
                     }
+                }else if(type.isEnum()){
+                    String[] enumVals = getEnumVals(type);
+                    String enumType = ((Enum) value).name();
+                    ImInt index = new ImInt(indexOf(enumType, enumVals));
+                    if(ImGui.combo(field.getName(), index, enumVals, enumVals.length)){
+                        field.set(this, type.getEnumConstants()[index.get()]);
+                    }
                 }
 
 
@@ -87,6 +98,29 @@ public abstract class Component {
         }
     }
 
+    private <T extends Enum<T>> String[] getEnumVals(Class<T> enumType) {
+        String[] enumVals = new String[enumType.getEnumConstants().length];
+        int i = 0;
+        for(T enumIntVal : enumType.getEnumConstants()){
+            enumVals[i] = enumIntVal.name();
+            i++;
+        }
+        return enumVals;
+    }
+
+    private int indexOf(String str, String[] arr){
+        for(int i = 0; i < arr.length; i++){
+            if(str.equals(arr[i])){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void destroy(){
+
+    }
+
     public int getUID(){
         return this.uid;
     }
@@ -94,4 +128,5 @@ public abstract class Component {
     public static void init(int maxId){
         ID_COUNTER = maxId;
     }
+
 }

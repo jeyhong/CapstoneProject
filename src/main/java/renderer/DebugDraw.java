@@ -164,6 +164,4 @@ public class DebugDraw {
         }
         addLine2D(points[points.length - 1], points[0], color, lifetime);
     }
-
-
 }

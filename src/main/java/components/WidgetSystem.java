@@ -25,7 +25,7 @@ public class WidgetSystem extends Component{
     }
 
     @Override
-    public void update(float dt){
+    public void editorUpdate(float dt){
         if(usingWidget == 0){
             gameObj.getComponent(TranslateWidget.class).setUsing();
             gameObj.getComponent(ScaleWidget.class).setNotUsing();

@@ -1,5 +1,78 @@
 [
   {
+    "uid": 0,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "NMM.Transform",
+        "properties": {
+          "position": {
+            "x": -2.625,
+            "y": 3.125
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "rotation": 0.0,
+          "zIndex": 0,
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 0.8,
+            "y": 0.8,
+            "z": 0.8,
+            "w": 0.5
+          },
+          "spr": {
+            "texId": 0,
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "assets/images/decorationsAndBlocks.png",
+              "width": 112,
+              "height": 192
+            },
+            "texCoords": [
+              {
+                "x": 0.2857143,
+                "y": 0.9166667
+              },
+              {
+                "x": 0.2857143,
+                "y": 0.8333333
+              },
+              {
+                "x": 0.14285715,
+                "y": 0.8333333
+              },
+              {
+                "x": 0.14285715,
+                "y": 0.9166667
+              }
+            ]
+          },
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
+      }
+    ],
+    "doSerialization": true,
+    "dead": false
+  },
+  {
     "uid": 1,
     "name": "Sprite_Object_Gen",
     "components": [
@@ -7,12 +80,12 @@
         "type": "NMM.Transform",
         "properties": {
           "position": {
-            "x": 0.0,
-            "y": 0.0
+            "x": 2.625,
+            "y": 0.875
           },
           "scale": {
-            "x": 32.0,
-            "y": 32.0
+            "x": 0.25,
+            "y": 0.25
           },
           "rotation": 0.0,
           "zIndex": 0,
@@ -40,19 +113,19 @@
             },
             "texCoords": [
               {
-                "x": 0.42857143,
+                "x": 0.2857143,
                 "y": 0.9166667
               },
               {
-                "x": 0.42857143,
-                "y": 0.8333333
-              },
-              {
                 "x": 0.2857143,
                 "y": 0.8333333
               },
               {
-                "x": 0.2857143,
+                "x": 0.14285715,
+                "y": 0.8333333
+              },
+              {
+                "x": 0.14285715,
                 "y": 0.9166667
               }
             ]
@@ -60,9 +133,17 @@
           "UID": -1,
           "uid": 0
         }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
       }
     ],
-    "doSerialization": true
+    "doSerialization": true,
+    "dead": false
   },
   {
     "uid": 2,
@@ -72,12 +153,12 @@
         "type": "NMM.Transform",
         "properties": {
           "position": {
-            "x": 415.12906,
-            "y": 352.4168
+            "x": -2.625,
+            "y": 4.375
           },
           "scale": {
-            "x": 32.0,
-            "y": 32.00003
+            "x": 0.25,
+            "y": 0.25
           },
           "rotation": 0.0,
           "zIndex": 0,
@@ -89,10 +170,224 @@
         "type": "components.SpriteRenderer",
         "properties": {
           "color": {
-            "x": 1.0,
-            "y": 1.0,
-            "z": 1.0,
-            "w": 1.0
+            "x": 0.8,
+            "y": 0.8,
+            "z": 0.8,
+            "w": 0.5
+          },
+          "spr": {
+            "texId": 0,
+            "width": 72.0,
+            "height": 97.0,
+            "texture": {
+              "filepath": "assets/images/Player/p1_spritesheet.png",
+              "width": 508,
+              "height": 288
+            },
+            "texCoords": [
+              {
+                "x": 0.56692916,
+                "y": 1.0
+              },
+              {
+                "x": 0.56692916,
+                "y": 0.6631944
+              },
+              {
+                "x": 0.42519686,
+                "y": 0.6631944
+              },
+              {
+                "x": 0.42519686,
+                "y": 1.0
+              }
+            ]
+          },
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.StateMachine",
+        "properties": {
+          "stateTransfers": {},
+          "states": [
+            {
+              "title": "Walk",
+              "animationFrames": [
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 72.0,
+                    "height": 97.0,
+                    "texture": {
+                      "filepath": "assets/images/Player/p1_spritesheet.png",
+                      "width": 508,
+                      "height": 288
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.14173229,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.14173229,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.23
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 72.0,
+                    "height": 97.0,
+                    "texture": {
+                      "filepath": "assets/images/Player/p1_spritesheet.png",
+                      "width": 508,
+                      "height": 288
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.42519686,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.42519686,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.28346458,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.28346458,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.23
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 72.0,
+                    "height": 97.0,
+                    "texture": {
+                      "filepath": "assets/images/Player/p1_spritesheet.png",
+                      "width": 508,
+                      "height": 288
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.56692916,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.56692916,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.42519686,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.42519686,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.23
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 72.0,
+                    "height": 97.0,
+                    "texture": {
+                      "filepath": "assets/images/Player/p1_spritesheet.png",
+                      "width": 508,
+                      "height": 288
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.42519686,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.42519686,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.28346458,
+                        "y": 0.6631944
+                      },
+                      {
+                        "x": 0.28346458,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.23
+                }
+              ],
+              "doesLoop": true
+            }
+          ],
+          "defStateTitle": "Walk",
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
+      }
+    ],
+    "doSerialization": true,
+    "dead": false
+  },
+  {
+    "uid": 10,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "NMM.Transform",
+        "properties": {
+          "position": {
+            "x": 1.125,
+            "y": 1.375
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "rotation": 0.0,
+          "zIndex": 0,
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 0.8,
+            "y": 0.8,
+            "z": 0.8,
+            "w": 0.5
           },
           "spr": {
             "texId": 0,
@@ -105,44 +400,52 @@
             },
             "texCoords": [
               {
-                "x": 0.2857143,
-                "y": 0.6666667
+                "x": 0.42857143,
+                "y": 1.0
+              },
+              {
+                "x": 0.42857143,
+                "y": 0.9166667
               },
               {
                 "x": 0.2857143,
-                "y": 0.5833333
+                "y": 0.9166667
               },
               {
-                "x": 0.14285715,
-                "y": 0.5833333
-              },
-              {
-                "x": 0.14285715,
-                "y": 0.6666667
+                "x": 0.2857143,
+                "y": 1.0
               }
             ]
           },
           "UID": -1,
           "uid": 0
         }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
       }
     ],
-    "doSerialization": true
+    "doSerialization": true,
+    "dead": false
   },
   {
-    "uid": 3,
+    "uid": 12,
     "name": "Sprite_Object_Gen",
     "components": [
       {
         "type": "NMM.Transform",
         "properties": {
           "position": {
-            "x": 0.0,
-            "y": 0.0
+            "x": 0.625,
+            "y": 0.625
           },
           "scale": {
-            "x": 32.0,
-            "y": 32.0
+            "x": 0.25,
+            "y": 0.25
           },
           "rotation": 0.0,
           "zIndex": 0,
@@ -171,43 +474,265 @@
             "texCoords": [
               {
                 "x": 0.42857143,
-                "y": 0.6666667
+                "y": 1.0
               },
               {
                 "x": 0.42857143,
-                "y": 0.5833333
+                "y": 0.9166667
               },
               {
                 "x": 0.2857143,
-                "y": 0.5833333
+                "y": 0.9166667
               },
               {
                 "x": 0.2857143,
-                "y": 0.6666667
+                "y": 1.0
               }
             ]
           },
           "UID": -1,
           "uid": 0
         }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
       }
     ],
-    "doSerialization": true
+    "doSerialization": true,
+    "dead": false
   },
   {
-    "uid": 4,
+    "uid": 15,
     "name": "Sprite_Object_Gen",
     "components": [
       {
         "type": "NMM.Transform",
         "properties": {
           "position": {
-            "x": 192.0,
-            "y": -64.0
+            "x": 1.875,
+            "y": 1.125
           },
           "scale": {
-            "x": 32.0,
-            "y": 32.0
+            "x": 0.25,
+            "y": 0.25
+          },
+          "rotation": 0.0,
+          "zIndex": 0,
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 0.8,
+            "y": 0.8,
+            "z": 0.8,
+            "w": 0.5
+          },
+          "spr": {
+            "texId": 0,
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "assets/images/spritesheet.png",
+              "width": 224,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 0.071428575,
+                "y": 1.0
+              },
+              {
+                "x": 0.071428575,
+                "y": 0.5
+              },
+              {
+                "x": 0.0,
+                "y": 0.5
+              },
+              {
+                "x": 0.0,
+                "y": 1.0
+              }
+            ]
+          },
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.StateMachine",
+        "properties": {
+          "stateTransfers": {},
+          "states": [
+            {
+              "title": "Walk",
+              "animationFrames": [
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.071428575,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.071428575,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.2857143,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.2857143,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                }
+              ],
+              "doesLoop": true
+            }
+          ],
+          "defStateTitle": "Walk",
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
+      }
+    ],
+    "doSerialization": true,
+    "dead": false
+  },
+  {
+    "uid": 17,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "NMM.Transform",
+        "properties": {
+          "position": {
+            "x": 1.625,
+            "y": 1.125
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.25
           },
           "rotation": 0.0,
           "zIndex": 0,
@@ -229,25 +754,25 @@
             "width": 16.0,
             "height": 16.0,
             "texture": {
-              "filepath": "assets/images/decorationsAndBlocks.png",
-              "width": 112,
-              "height": 192
+              "filepath": "assets/images/spritesheet.png",
+              "width": 224,
+              "height": 32
             },
             "texCoords": [
               {
-                "x": 1.0,
+                "x": 0.21428572,
                 "y": 1.0
               },
               {
-                "x": 1.0,
-                "y": 0.9166667
+                "x": 0.21428572,
+                "y": 0.5
               },
               {
-                "x": 0.85714287,
-                "y": 0.9166667
+                "x": 0.14285715,
+                "y": 0.5
               },
               {
-                "x": 0.85714287,
+                "x": 0.14285715,
                 "y": 1.0
               }
             ]
@@ -255,24 +780,173 @@
           "UID": -1,
           "uid": 0
         }
+      },
+      {
+        "type": "components.StateMachine",
+        "properties": {
+          "stateTransfers": {},
+          "states": [
+            {
+              "title": "Walk",
+              "animationFrames": [
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.071428575,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.071428575,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.2857143,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.2857143,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                }
+              ],
+              "doesLoop": true
+            }
+          ],
+          "defStateTitle": "Walk",
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
       }
     ],
-    "doSerialization": true
+    "doSerialization": true,
+    "dead": false
   },
   {
-    "uid": 5,
+    "uid": 19,
     "name": "Sprite_Object_Gen",
     "components": [
       {
         "type": "NMM.Transform",
         "properties": {
           "position": {
-            "x": 159.67096,
-            "y": 191.60518
+            "x": 2.625,
+            "y": 0.875
           },
           "scale": {
-            "x": 33.75461,
-            "y": 32.0
+            "x": 0.25,
+            "y": 0.25
           },
           "rotation": 0.0,
           "zIndex": 0,
@@ -294,25 +968,25 @@
             "width": 16.0,
             "height": 16.0,
             "texture": {
-              "filepath": "assets/images/decorationsAndBlocks.png",
-              "width": 112,
-              "height": 192
+              "filepath": "assets/images/spritesheet.png",
+              "width": 224,
+              "height": 32
             },
             "texCoords": [
               {
-                "x": 1.0,
+                "x": 0.21428572,
                 "y": 1.0
               },
               {
-                "x": 1.0,
-                "y": 0.9166667
+                "x": 0.21428572,
+                "y": 0.5
               },
               {
-                "x": 0.85714287,
-                "y": 0.9166667
+                "x": 0.14285715,
+                "y": 0.5
               },
               {
-                "x": 0.85714287,
+                "x": 0.14285715,
                 "y": 1.0
               }
             ]
@@ -320,8 +994,371 @@
           "UID": -1,
           "uid": 0
         }
+      },
+      {
+        "type": "components.StateMachine",
+        "properties": {
+          "stateTransfers": {},
+          "states": [
+            {
+              "title": "Walk",
+              "animationFrames": [
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.071428575,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.071428575,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.2857143,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.2857143,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                }
+              ],
+              "doesLoop": true
+            }
+          ],
+          "defStateTitle": "Walk",
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
       }
     ],
-    "doSerialization": true
+    "doSerialization": true,
+    "dead": false
+  },
+  {
+    "uid": 21,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "NMM.Transform",
+        "properties": {
+          "position": {
+            "x": 2.625,
+            "y": 0.875
+          },
+          "scale": {
+            "x": 0.25,
+            "y": 0.25
+          },
+          "rotation": 0.0,
+          "zIndex": 0,
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.SpriteRenderer",
+        "properties": {
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "spr": {
+            "texId": 0,
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "assets/images/spritesheet.png",
+              "width": 224,
+              "height": 32
+            },
+            "texCoords": [
+              {
+                "x": 0.2857143,
+                "y": 1.0
+              },
+              {
+                "x": 0.2857143,
+                "y": 0.5
+              },
+              {
+                "x": 0.21428572,
+                "y": 0.5
+              },
+              {
+                "x": 0.21428572,
+                "y": 1.0
+              }
+            ]
+          },
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.StateMachine",
+        "properties": {
+          "stateTransfers": {},
+          "states": [
+            {
+              "title": "Walk",
+              "animationFrames": [
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.071428575,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.071428575,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.0,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.2857143,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.2857143,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                },
+                {
+                  "spr": {
+                    "texId": 0,
+                    "width": 16.0,
+                    "height": 16.0,
+                    "texture": {
+                      "filepath": "assets/images/spritesheet.png",
+                      "width": 224,
+                      "height": 32
+                    },
+                    "texCoords": [
+                      {
+                        "x": 0.21428572,
+                        "y": 1.0
+                      },
+                      {
+                        "x": 0.21428572,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 0.5
+                      },
+                      {
+                        "x": 0.14285715,
+                        "y": 1.0
+                      }
+                    ]
+                  },
+                  "frameTime": 0.2
+                }
+              ],
+              "doesLoop": true
+            }
+          ],
+          "defStateTitle": "Walk",
+          "UID": -1,
+          "uid": 0
+        }
+      },
+      {
+        "type": "components.NonPickables",
+        "properties": {
+          "UID": -1,
+          "uid": 0
+        }
+      }
+    ],
+    "doSerialization": true,
+    "dead": false
   }
 ]

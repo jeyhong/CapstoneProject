@@ -10,24 +10,24 @@ import renderer.DebugDraw;
 public class GridLines extends Component{
 
     @Override
-    public void update(float dt){
+    public void editorUpdate(float dt){
         Camera cam = Window.getScene().camera();
         Vector2f cameraPos = cam.position;
         Vector2f projSize = cam.getProjSize();
 
-        int firstX = ((int)(cameraPos.x / Settings.GRID_WIDTH) - 1) * Settings.GRID_WIDTH;
-        int firstY = ((int)(cameraPos.y / Settings.GRID_HEIGHT) -1) * Settings.GRID_HEIGHT;
+        float firstX = ((int)(cameraPos.x / Settings.GRID_WIDTH) - 1) * Settings.GRID_WIDTH;
+        float firstY = ((int)(cameraPos.y / Settings.GRID_HEIGHT) -1) * Settings.GRID_HEIGHT;
 
-        int vertLines = (int)(projSize.x * cam.getZoom()/ Settings.GRID_WIDTH) + 2;
-        int horizLInes = (int)(projSize.y * cam.getZoom()/ Settings.GRID_HEIGHT) + 2;
+        float vertLines = (int)(projSize.x * cam.getZoom()/ Settings.GRID_WIDTH) + 2;
+        float horizLInes = (int)(projSize.y * cam.getZoom()/ Settings.GRID_HEIGHT) + 2;
 
-        int height = (int)(projSize.y * cam.getZoom()) + Settings.GRID_HEIGHT * 2;
-        int width = (int)(projSize.x * cam.getZoom()) + Settings.GRID_WIDTH * 2;
+        float height = (int)(projSize.y * cam.getZoom()) + Settings.GRID_HEIGHT * 2;
+        float width = (int)(projSize.x * cam.getZoom()) + Settings.GRID_WIDTH * 2;
         Vector3f color = new Vector3f(0.2f, 0.0f, 0.2f);
-        int maxLines = Math.max(vertLines, horizLInes);
+        float maxLines = Math.max(vertLines, horizLInes);
         for(int i = 0; i < maxLines; i++){
-            int x = firstX + (Settings.GRID_WIDTH * i);
-            int y = firstY + (Settings.GRID_HEIGHT * i);
+            float x = firstX + (Settings.GRID_WIDTH * i);
+            float y = firstY + (Settings.GRID_HEIGHT * i);
 
             if(i < vertLines){
                 DebugDraw.addLine2D(new Vector2f(x, firstY), new Vector2f(x, firstY + height), color);

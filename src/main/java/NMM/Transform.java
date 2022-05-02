@@ -32,11 +32,12 @@ public class Transform extends Component {
     }
 
     @Override
-    public void imGui(){
+    public void imgui(){
+        gameObj.name = JImGui.inputText("Name: ", gameObj.name);
         JImGui.drawVec2Control("Position", this.position);
         JImGui.drawVec2Control("Scale", this.scale, 32.0f);
-        JImGui.dragFloat("Rotation", this.rotation);
-        JImGui.dragInt("Z-Index", this.zIndex);
+        this.rotation = JImGui.dragFloat("Rotation", this.rotation);
+        this.zIndex = JImGui.dragInt("Z-Index", this.zIndex);
     }
 
     public Transform copy(){

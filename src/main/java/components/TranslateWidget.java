@@ -9,14 +9,14 @@ public class TranslateWidget extends Widget{
     }
 
     @Override
-    public void update(float dt){
+    public void editorUpdate(float dt){
            if(activeGameObj != null){
                if(xAxisActive && !yAxisActive){
-                   activeGameObj.transform.position.x -= MouseListener.getWorldDx();
+                   activeGameObj.transform.position.x -= MouseListener.getWorldX();
                }else if (yAxisActive){
                    activeGameObj.transform.position.y -= MouseListener.getWorldY();
                }
            }
-           super.update(dt);
+           super.editorUpdate(dt);
     }
 }

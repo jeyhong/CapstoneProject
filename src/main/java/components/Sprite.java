@@ -14,7 +14,7 @@ public class Sprite {
             new Vector2f(1, 0),
             new Vector2f(0, 0),
             new Vector2f(0, 1)
-    };;
+    };
 
     public Texture getTexture(){
         return this.texture;

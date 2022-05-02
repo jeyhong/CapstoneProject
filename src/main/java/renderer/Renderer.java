@@ -36,14 +36,21 @@ public class Renderer {
         }
 
         if(!added){
-            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, spr.gameObj.transform.zIndex);
+            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, spr.gameObj.transform.zIndex, this);
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(spr);
             Collections.sort(batches);
         }
     }
-
+    public void destroyGameObj(GameObj go) {
+        if(go.getComponent(SpriteRenderer.class) == null) return;
+        for(RenderBatch batch : batches){
+            if(batch.destroyIfExist(go)){
+                return;
+            }
+        }
+    }
     public static void bindShader(Shader shader){
         currShader = shader;
     }
@@ -59,4 +66,6 @@ public class Renderer {
             batch.render();
         }
     }
+
+
 }

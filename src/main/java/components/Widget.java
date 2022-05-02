@@ -1,14 +1,11 @@
 package components;
 
-import NMM.GameObj;
-import NMM.MouseListener;
-import NMM.Prefabs;
-import NMM.Window;
+import NMM.*;
 import editor.PropertiesWindow;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Widget extends Component{
     private Vector4f xAxisColor = new Vector4f(1, 0.3f, 0.3f, 1);
@@ -22,11 +19,11 @@ public class Widget extends Component{
     private SpriteRenderer ySpr;
     protected GameObj activeGameObj = null;
 
-    private Vector2f xAxisOffset = new Vector2f(57, -3);
-    private Vector2f yAxisOffset = new Vector2f(13, 55);
+    private Vector2f xAxisOffset = new Vector2f(24f / 80f, -6f / 80f);
+    private Vector2f yAxisOffset = new Vector2f(-7f /80f, 21f / 80f);
 
-    private int widgetWidth = 16;
-    private int widgetHeight = 48;
+    private float widgetWidth = 16f / 80f;
+    private float widgetHeight = 48f / 80f;
 
     protected boolean xAxisActive = false;
     protected boolean yAxisActive = false;
@@ -36,8 +33,8 @@ public class Widget extends Component{
     private PropertiesWindow propWindow;
 
     public Widget(Sprite arrowSprite, PropertiesWindow propWindow){
-        this.xAxisObj = Prefabs.generateSprObj(arrowSprite, 16, 48);
-        this.yAxisObj = Prefabs.generateSprObj(arrowSprite, 16, 48);
+        this.xAxisObj = Prefabs.generateSprObj(arrowSprite, widgetWidth, widgetHeight);
+        this.yAxisObj = Prefabs.generateSprObj(arrowSprite, widgetWidth, widgetHeight);
         this.xSpr = this.xAxisObj.getComponent(SpriteRenderer.class);
         this.ySpr = this.yAxisObj.getComponent(SpriteRenderer.class);
         this.propWindow = propWindow;
@@ -60,11 +57,30 @@ public class Widget extends Component{
 
     @Override
     public void update(float dt){
+        if(inUse){
+            this.setInactive();
+        }
+    }
+
+    @Override
+    public void editorUpdate(float dt){
         if(!inUse) return;
 
         this.activeGameObj = this.propWindow.getActiveGo();
         if(this.activeGameObj != null){
             this.setActive();
+            if(KeyListener.isKeyPressed(GLFW_KEY_LEFT_CONTROL) && KeyListener.keyBeginPress(GLFW_KEY_D)){
+                GameObj newObj = this.activeGameObj.copy();
+                Window.getScene().addGameObjToScene(newObj);
+                newObj.transform.position.add(0.1f, 0.1f);
+                this.propWindow.setActiveGameObj(newObj);
+                return;
+            } else if(KeyListener.keyBeginPress(GLFW_KEY_DELETE)){
+                activeGameObj.destroy();
+                this.setInactive();
+                this.propWindow.setActiveGameObj(null);
+                return;
+            }
         }else{
             this.setInactive();
             return;
@@ -105,11 +121,11 @@ public class Widget extends Component{
     }
 
     private boolean checkXHoverState() {
-        Vector2f mousePos = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
-        if(mousePos.x <= xAxisObj.transform.position.x &&
-                mousePos.x >= xAxisObj.transform.position.x - widgetHeight &&
-                mousePos.y >= xAxisObj.transform.position.y &&
-                mousePos.y <= xAxisObj.transform.position.y + widgetWidth){
+        Vector2f mousePos = MouseListener.getWorld();;
+        if(mousePos.x <= xAxisObj.transform.position.x + (widgetHeight / 2.0f) &&
+                mousePos.x >= xAxisObj.transform.position.x - (widgetWidth / 2.0f) &&
+                mousePos.y >= xAxisObj.transform.position.y - (widgetHeight / 2.0f) &&
+                mousePos.y <= xAxisObj.transform.position.y + (widgetWidth / 2.0f)){
             xSpr.setColor(xHoverColor);
             return true;
         }
@@ -120,11 +136,11 @@ public class Widget extends Component{
 
 
     private boolean checkYHoverState() {
-        Vector2f mousePos = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
-        if(mousePos.x <= yAxisObj.transform.position.x &&
-                mousePos.x >= yAxisObj.transform.position.x - widgetWidth &&
-                mousePos.y <= yAxisObj.transform.position.y &&
-                mousePos.y >= yAxisObj.transform.position.y - widgetHeight){
+        Vector2f mousePos = MouseListener.getWorld();
+        if(mousePos.x <= yAxisObj.transform.position.x + (widgetWidth/ 2.0f) &&
+                mousePos.x >= yAxisObj.transform.position.x - (widgetWidth / 2.0f) &&
+                mousePos.y <= yAxisObj.transform.position.y + (widgetHeight / 2.0f) &&
+                mousePos.y >= yAxisObj.transform.position.y -(widgetHeight / 2.0f)){
             ySpr.setColor(yHoverColor);
             return true;
         }
