@@ -6,22 +6,22 @@ import renderer.Texture;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpriteSheet {
+public class Spritesheet {
 
     private Texture texture;
     private List<Sprite> sprites;
 
-    public SpriteSheet(Texture texture, int spriteWidth, int spriteHeight, int numSprites, int padding){
+    public Spritesheet(Texture texture, int spriteWidth, int spriteHeight, int numSprites, int spacing) {
         this.sprites = new ArrayList<>();
 
         this.texture = texture;
-        int currX = 0;
-        int currY = texture.getHeight() - spriteHeight;
-        for(int i = 0; i < numSprites; i++){
-            float topY = (currY + spriteHeight) / (float)texture.getHeight();
-            float rightX = (currX + spriteWidth)/ (float)texture.getWidth();
-            float leftX = currX / (float)texture.getWidth();
-            float bottomY = currY / (float)texture.getHeight();
+        int currentX = 0;
+        int currentY = texture.getHeight() - spriteHeight;
+        for (int i = 0; i < numSprites; i++) {
+            float topY = (currentY + spriteHeight) / (float) texture.getHeight();
+            float rightX = (currentX + spriteWidth) / (float) texture.getWidth();
+            float leftX = currentX / (float) texture.getWidth();
+            float bottomY = currentY / (float) texture.getHeight();
 
             Vector2f[] texCoords = {
                     new Vector2f(rightX, topY),
@@ -29,23 +29,29 @@ public class SpriteSheet {
                     new Vector2f(leftX, bottomY),
                     new Vector2f(leftX, topY)
             };
+            Vector2f normalizeSprites = new Vector2f(spriteWidth, spriteHeight);
+            normalizeSprites.mul(1.0f).sub(new Vector2f(1.0f, 1.0f));
             Sprite sprite = new Sprite();
             sprite.setTexture(this.texture);
             sprite.setTexCoords(texCoords);
-            sprite.setWidth(spriteWidth);
-            sprite.setHeight(spriteHeight);
+            sprite.setWidth(normalizeSprites.x);
+            sprite.setHeight(normalizeSprites.y);
             this.sprites.add(sprite);
 
-            currX += spriteWidth + padding;
-            if(currX >= texture.getWidth()){
-                currX = 0;
-                currY -= spriteHeight + padding;
+            currentX += spriteWidth + spacing;
+            if (currentX >= texture.getWidth()) {
+                currentX = 0;
+                currentY -= spriteHeight + spacing;
             }
         }
     }
 
-    public Sprite getSprite(int index){
+    public Sprite getSprite(int index) {
         return this.sprites.get(index);
+    }
+
+    public List<Sprite> getSprites() {
+        return this.sprites;
     }
 
     public int size() {

@@ -1,6 +1,6 @@
 package components;
 
-import NMM.GameObj;
+import NMM.GameObject;
 import NMM.MouseListener;
 import NMM.Prefabs;
 import NMM.Window;
@@ -10,62 +10,67 @@ import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
-public class Widget extends Component{
-    private Vector4f xAxisColor = new Vector4f(1, 0.3f, 0.3f, 1);
-    private Vector4f xHoverColor = new Vector4f(1, 0, 0, 1);
-    private Vector4f yAxisColor = new Vector4f(0.3f, 1, 0.3f, 1);
-    private Vector4f yHoverColor = new Vector4f(0, 1, 0, 1);
-
-    private GameObj xAxisObj;
-    private GameObj yAxisObj;
-    private SpriteRenderer xSpr;
-    private SpriteRenderer ySpr;
-    protected GameObj activeGameObj = null;
-
-    private Vector2f xAxisOffset = new Vector2f(57, -3);
-    private Vector2f yAxisOffset = new Vector2f(13, 55);
-
-    private int widgetWidth = 16;
-    private int widgetHeight = 48;
-
+public class Widget extends Component {
+    protected GameObject activeGameObject = null;
     protected boolean xAxisActive = false;
     protected boolean yAxisActive = false;
+    private Vector4f xAxisColor = new Vector4f(1, 0.3f, 0.3f, 1);
+    private Vector4f xAxisColorHover = new Vector4f(1, 0, 0, 1);
+    private Vector4f yAxisColor = new Vector4f(0.3f, 1, 0.3f, 1);
+    private Vector4f yAxisColorHover = new Vector4f(0, 1, 0, 1);
+    private GameObject xAxisObject;
+    private GameObject yAxisObject;
+    private SpriteRenderer xAxisSprite;
+    private SpriteRenderer yAxisSprite;
+    private Vector2f xAxisOffset = new Vector2f(24f / 80f, -6f / 80f);
+    private Vector2f yAxisOffset = new Vector2f(-7f / 80f, 21f / 80f);
+    private float WidgetWidth = 16f / 80f;
+    private float WidgetHeight = 48f / 80f;
+    private boolean using = false;
 
-    private boolean inUse = false;
+    private PropertiesWindow propertiesWindow;
 
-    private PropertiesWindow propWindow;
+    public Widget(Sprite arrowSprite, PropertiesWindow propertiesWindow) {
+        this.xAxisObject = Prefabs.generateSpriteObject(arrowSprite, WidgetWidth, WidgetHeight);
+        this.yAxisObject = Prefabs.generateSpriteObject(arrowSprite, WidgetWidth, WidgetHeight);
+        this.xAxisSprite = this.xAxisObject.getComponent(SpriteRenderer.class);
+        this.yAxisSprite = this.yAxisObject.getComponent(SpriteRenderer.class);
+        this.propertiesWindow = propertiesWindow;
 
-    public Widget(Sprite arrowSprite, PropertiesWindow propWindow){
-        this.xAxisObj = Prefabs.generateSprObj(arrowSprite, 16, 48);
-        this.yAxisObj = Prefabs.generateSprObj(arrowSprite, 16, 48);
-        this.xSpr = this.xAxisObj.getComponent(SpriteRenderer.class);
-        this.ySpr = this.yAxisObj.getComponent(SpriteRenderer.class);
-        this.propWindow = propWindow;
+        this.xAxisObject.addComponent(new NonPickable());
+        this.yAxisObject.addComponent(new NonPickable());
 
-        this.xAxisObj.addComponent(new NonPickables());
-        this.yAxisObj.addComponent(new NonPickables());
-        Window.getScene().addGameObjToScene(xAxisObj);
-        Window.getScene().addGameObjToScene(yAxisObj);
+        Window.getScene().addGameObjToScene(this.xAxisObject);
+        Window.getScene().addGameObjToScene(this.yAxisObject);
     }
 
     @Override
-    public void start(){
-        this.xAxisObj.transform.rotation = 90;
-        this.yAxisObj.transform.rotation = 180;
-        this.xAxisObj.transform.zIndex = 100;
-        this.yAxisObj.transform.zIndex = 100;
-        this.xAxisObj.setNoSerialize();
-        this.yAxisObj.setNoSerialize();
+    public void start() {
+        this.xAxisObject.transform.rotation = 90;
+        this.yAxisObject.transform.rotation = 180;
+        this.xAxisObject.transform.zIndex = 100;
+        this.yAxisObject.transform.zIndex = 100;
+        this.xAxisObject.setNoSerialize();
+        this.yAxisObject.setNoSerialize();
     }
 
     @Override
-    public void update(float dt){
-        if(!inUse) return;
+    public void update(float dt) {
+        if (using) {
+            this.setInactive();
+        }
+        this.xAxisObject.getComponent(SpriteRenderer.class).setColor(new Vector4f(0, 0, 0, 0));
+        this.yAxisObject.getComponent(SpriteRenderer.class).setColor(new Vector4f(0, 0, 0, 0));
+    }
 
-        this.activeGameObj = this.propWindow.getActiveGo();
-        if(this.activeGameObj != null){
+    @Override
+    public void editorUpdate(float dt) {
+        if (!using) return;
+
+        this.activeGameObject = this.propertiesWindow.getActiveGameObject();
+        if (this.activeGameObject != null) {
             this.setActive();
-        }else{
+        } else {
             this.setInactive();
             return;
         }
@@ -73,72 +78,70 @@ public class Widget extends Component{
         boolean xAxisHot = checkXHoverState();
         boolean yAxisHot = checkYHoverState();
 
-        if((xAxisHot || xAxisActive) && MouseListener.isDragging() && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)){
+        if ((xAxisHot || xAxisActive) && MouseListener.isDragging() && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
             xAxisActive = true;
             yAxisActive = false;
-        } else if ((yAxisHot || yAxisActive) && MouseListener.isDragging() && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)){
+        } else if ((yAxisHot || yAxisActive) && MouseListener.isDragging() && MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
             yAxisActive = true;
             xAxisActive = false;
-        } else{
-            yAxisActive = false;
+        } else {
             xAxisActive = false;
+            yAxisActive = false;
         }
 
-        if(this.activeGameObj != null){
-            this.xAxisObj.transform.position.set(this.activeGameObj.transform.position);
-            this.yAxisObj.transform.position.set(this.activeGameObj.transform.position);
-            this.xAxisObj.transform.position.add(this.xAxisOffset);
-            this.yAxisObj.transform.position.add(this.yAxisOffset);
+        if (this.activeGameObject != null) {
+            this.xAxisObject.transform.position.set(this.activeGameObject.transform.position);
+            this.yAxisObject.transform.position.set(this.activeGameObject.transform.position);
+            this.xAxisObject.transform.position.add(this.xAxisOffset);
+            this.yAxisObject.transform.position.add(this.yAxisOffset);
         }
-
     }
 
-    private void setActive(){
-        this.xSpr.setColor(xAxisColor);
-        this.ySpr.setColor(yAxisColor);
+    private void setActive() {
+        this.xAxisSprite.setColor(xAxisColor);
+        this.yAxisSprite.setColor(yAxisColor);
     }
 
-    private void setInactive(){
-        this.activeGameObj = null;
-        this.xSpr.setColor(new Vector4f(0,0,0,0));
-        this.ySpr.setColor(new Vector4f(0,0,0,0));
+    private void setInactive() {
+        this.activeGameObject = null;
+        this.xAxisSprite.setColor(new Vector4f(0, 0, 0, 0));
+        this.yAxisSprite.setColor(new Vector4f(0, 0, 0, 0));
     }
 
     private boolean checkXHoverState() {
-        Vector2f mousePos = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
-        if(mousePos.x <= xAxisObj.transform.position.x &&
-                mousePos.x >= xAxisObj.transform.position.x - widgetHeight &&
-                mousePos.y >= xAxisObj.transform.position.y &&
-                mousePos.y <= xAxisObj.transform.position.y + widgetWidth){
-            xSpr.setColor(xHoverColor);
+        Vector2f mousePos = new Vector2f(MouseListener.getWorldX(), MouseListener.getWorldY());
+        if (mousePos.x <= xAxisObject.transform.position.x + (WidgetHeight / 2.0f) &&
+                mousePos.x >= xAxisObject.transform.position.x - (WidgetWidth / 2.0f) &&
+                mousePos.y >= xAxisObject.transform.position.y - (WidgetHeight / 2.0f) &&
+                mousePos.y <= xAxisObject.transform.position.y + (WidgetWidth / 2.0f)) {
+            xAxisSprite.setColor(xAxisColorHover);
             return true;
         }
 
-        xSpr.setColor(xAxisColor);
+        xAxisSprite.setColor(xAxisColor);
         return false;
     }
-
 
     private boolean checkYHoverState() {
-        Vector2f mousePos = new Vector2f(MouseListener.getOrthoX(), MouseListener.getOrthoY());
-        if(mousePos.x <= yAxisObj.transform.position.x &&
-                mousePos.x >= yAxisObj.transform.position.x - widgetWidth &&
-                mousePos.y <= yAxisObj.transform.position.y &&
-                mousePos.y >= yAxisObj.transform.position.y - widgetHeight){
-            ySpr.setColor(yHoverColor);
+        Vector2f mousePos = new Vector2f(MouseListener.getWorldX(), MouseListener.getWorldY());
+        if (mousePos.x <= yAxisObject.transform.position.x + (WidgetWidth / 2.0f) &&
+                mousePos.x >= yAxisObject.transform.position.x - (WidgetWidth / 2.0f) &&
+                mousePos.y <= yAxisObject.transform.position.y + (WidgetHeight / 2.0f) &&
+                mousePos.y >= yAxisObject.transform.position.y - (WidgetHeight / 2.0f)) {
+            yAxisSprite.setColor(yAxisColorHover);
             return true;
         }
 
-        ySpr.setColor(yAxisColor);
+        yAxisSprite.setColor(yAxisColor);
         return false;
     }
 
-    public void setUsing(){
-        this.inUse = true;
+    public void setUsing() {
+        this.using = true;
     }
 
-    public void setNotUsing(){
-        this.inUse = false;
+    public void setNotUsing() {
+        this.using = false;
         this.setInactive();
     }
 }

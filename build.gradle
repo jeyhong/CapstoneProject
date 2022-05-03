@@ -6,7 +6,7 @@ group 'team.five'
 version '1.0-SNAPSHOT'
 
 repositories {
-    flatDir{
+    flatDir {
         dirs 'libs'
     }
     mavenCentral()

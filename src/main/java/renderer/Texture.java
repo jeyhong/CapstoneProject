@@ -1,8 +1,6 @@
 package renderer;
 
-
 import org.lwjgl.BufferUtils;
-import org.w3c.dom.Text;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -24,59 +22,57 @@ public class Texture {
     public Texture(int width, int height) {
         this.filepath = "Generated";
 
-        //Generate texture on GPU
+        // Generate texture on GPU
         texID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texID);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
-                        GL_RGB, GL_UNSIGNED_BYTE, 0);
-
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     }
 
     public void init(String filepath) {
         this.filepath = filepath;
 
-        //Generate texture on GPU
+        // Generate texture on GPU
         texID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, texID);
 
-        //Set texture parameters
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // repeat image in both directions;
+        // Set texture parameters
+        // Repeat image in both directions
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        //When stretching image, pixelate
+        // When stretching the image, pixelate
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        //When shrinking image, pixelate
+        // When shrinking an image, pixelate
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        //load image
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);
         IntBuffer channels = BufferUtils.createIntBuffer(1);
         stbi_set_flip_vertically_on_load(true);
         ByteBuffer image = stbi_load(filepath, width, height, channels, 0);
 
-
         if (image != null) {
             this.width = width.get(0);
             this.height = height.get(0);
 
             if (channels.get(0) == 3) {
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0), 0,
-                        GL_RGB, GL_UNSIGNED_BYTE, image);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0),
+                        0, GL_RGB, GL_UNSIGNED_BYTE, image);
             } else if (channels.get(0) == 4) {
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0,
-                        GL_RGBA, GL_UNSIGNED_BYTE, image);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0),
+                        0, GL_RGBA, GL_UNSIGNED_BYTE, image);
             } else {
-                assert false : "Error: Unknown number of channels '" + channels.get(0);
+                assert false : "Error: (Texture) Unknown number of channels '" + channels.get(0) + "'";
             }
         } else {
-            assert false : "Error: Could not load image '" + filepath + "'";
+            assert false : "Error: (Texture) Could not load image '" + filepath + "'";
         }
 
-        stbi_image_free(image); //frees memory stb allocates - because it interfaces with C thus needs memory freed
+        stbi_image_free(image);
     }
 
     public void bind() {
@@ -91,12 +87,12 @@ public class Texture {
         return this.width;
     }
 
-    public int getHeight() {
-        return this.height;
-    }
-
     public String getFilepath() {
         return this.filepath;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 
     public int getId() {
@@ -109,6 +105,7 @@ public class Texture {
         if (!(o instanceof Texture)) return false;
         Texture oTex = (Texture) o;
         return oTex.getWidth() == this.width && oTex.getHeight() == this.height &&
-                oTex.getId() == this.texID && oTex.getFilepath().equals(this.filepath);
+                oTex.getId() == this.texID &&
+                oTex.getFilepath().equals(this.filepath);
     }
 }

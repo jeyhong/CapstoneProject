@@ -1,51 +1,106 @@
 package editor;
 
-import NMM.GameObj;
-import NMM.MouseListener;
-import components.NonPickables;
+import NMM.GameObject;
+import components.SpriteRenderer;
 import imgui.ImGui;
+import org.joml.Vector4f;
+import physics2d.components.Box2DCollider;
+import physics2d.components.CircleCollider;
+import physics2d.components.Rigidbody2D;
 import renderer.PickingTexture;
-import scenes.SceneInit;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropertiesWindow {
-    private GameObj activeGameObj = null;
+    private List<GameObject> activeGameObjects;
+    private List<Vector4f> activeGameObjectsOgColor;
+    private GameObject activeGameObject = null;
     private PickingTexture pickingTexture;
 
-    private float debounce = 0.2f;
-
-    public PropertiesWindow(PickingTexture pickingTexture){
+    public PropertiesWindow(PickingTexture pickingTexture) {
+        this.activeGameObjects = new ArrayList<>();
         this.pickingTexture = pickingTexture;
-
+        this.activeGameObjectsOgColor = new ArrayList<>();
     }
 
-    public void update(float dt, SceneInit currScene){
-        debounce -= dt;
-
-        if(MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) && debounce < 0){
-            int x = (int)MouseListener.getScreenX();
-            int y = (int)MouseListener.getScreenY();
-            int gameObjID = pickingTexture.readPixel(x, y);
-            GameObj pickedObj =  currScene.getGameObj(gameObjID);
-            if(pickedObj != null && pickedObj.getComponent(NonPickables.class) == null){
-                activeGameObj = pickedObj;
-            } else if (pickedObj == null && !MouseListener.isDragging()){
-                activeGameObj = null;
-            }
-            this.debounce = 0.2f;
-        }
-    }
-
-    public void imgui(){
-        if(activeGameObj != null){
+    public void imgui() {
+        if (activeGameObjects.size() == 1 && activeGameObjects.get(0) != null) {
+            activeGameObject = activeGameObjects.get(0);
             ImGui.begin("Properties");
-            activeGameObj.imGui();
+
+            if (ImGui.beginPopupContextWindow("ComponentAdder")) {
+                if (ImGui.menuItem("Add Rigidbody")) {
+                    if (activeGameObject.getComponent(Rigidbody2D.class) == null) {
+                        activeGameObject.addComponent(new Rigidbody2D());
+                    }
+                }
+
+                if (ImGui.menuItem("Add Box Collider")) {
+                    if (activeGameObject.getComponent(Box2DCollider.class) == null &&
+                            activeGameObject.getComponent(CircleCollider.class) == null) {
+                        activeGameObject.addComponent(new Box2DCollider());
+                    }
+                }
+
+                if (ImGui.menuItem("Add Circle Collider")) {
+                    if (activeGameObject.getComponent(CircleCollider.class) == null &&
+                            activeGameObject.getComponent(Box2DCollider.class) == null) {
+                        activeGameObject.addComponent(new CircleCollider());
+                    }
+                }
+
+                ImGui.endPopup();
+            }
+
+            activeGameObject.imgui();
             ImGui.end();
         }
     }
 
-    public GameObj getActiveGo(){
-        return this.activeGameObj;
+    public GameObject getActiveGameObject() {
+        return activeGameObjects.size() == 1 ? this.activeGameObjects.get(0) :
+                null;
+    }
+
+    public void setActiveGameObject(GameObject go) {
+        if (go != null) {
+            clearSelected();
+            this.activeGameObjects.add(go);
+        }
+    }
+
+    public List<GameObject> getActiveGameObjects() {
+        return this.activeGameObjects;
+    }
+
+    public void clearSelected() {
+        if (activeGameObjectsOgColor.size() > 0) {
+            int i = 0;
+            for (GameObject go : activeGameObjects) {
+                SpriteRenderer spr = go.getComponent(SpriteRenderer.class);
+                if (spr != null) {
+                    spr.setColor(activeGameObjectsOgColor.get(i));
+                }
+                i++;
+            }
+        }
+        this.activeGameObjects.clear();
+        this.activeGameObjectsOgColor.clear();
+    }
+
+    public void addActiveGameObject(GameObject go) {
+        SpriteRenderer spr = go.getComponent(SpriteRenderer.class);
+        if (spr != null) {
+            this.activeGameObjectsOgColor.add(new Vector4f(spr.getColor()));
+            spr.setColor(new Vector4f(0.8f, 0.8f, 0.0f, 0.8f));
+        } else {
+            this.activeGameObjectsOgColor.add(new Vector4f());
+        }
+        this.activeGameObjects.add(go);
+    }
+
+    public PickingTexture getPickingTexture() {
+        return this.pickingTexture;
     }
 }

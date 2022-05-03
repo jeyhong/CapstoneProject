@@ -5,17 +5,15 @@ import components.Component;
 
 import java.lang.reflect.Type;
 
-public class GameObjTypeAdapter implements JsonDeserializer<GameObj>{
-
-
+public class GameObjTypeAdapter implements JsonDeserializer<GameObject> {
     @Override
-    public GameObj deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject jsonObj = json.getAsJsonObject();
-        String name = jsonObj.get("name").getAsString();
-        JsonArray components = jsonObj.getAsJsonArray("components");
+    public GameObject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        JsonObject jsonObject = json.getAsJsonObject();
+        String name = jsonObject.get("name").getAsString();
+        JsonArray components = jsonObject.getAsJsonArray("components");
 
-        GameObj go = new GameObj(name);
-        for(JsonElement e : components){
+        GameObject go = new GameObject(name);
+        for (JsonElement e : components) {
             Component c = context.deserialize(e, Component.class);
             go.addComponent(c);
         }
